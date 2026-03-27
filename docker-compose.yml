@@ -2,6 +2,7 @@ services:
   mongo_1:
     build:
       context: .
+      dockerfile: Dockerfile.mongo
     image: mongocustom-sportsfacility
     container_name: mongodb1
     hostname: mongodb1
@@ -94,6 +95,20 @@ services:
           }
         );
       "
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rest-sfs-app
+    ports:
+      - "8080:8080"
+    networks:
+      - mongonet
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://admin:adminpassword@mongodb1:27017,mongodb2:27018,mongodb3:27019/sportsfacility?replicaSet=sportsfacility_set_single&authSource=admin
+    depends_on:
+      mongoinit:
+        condition: service_completed_successfully
 
 networks:
   mongonet: {}
