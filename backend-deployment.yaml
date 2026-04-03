@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sfs-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sfs-backend
+  template:
+    metadata:
+      labels:
+        app: sfs-backend
+    spec:
+      containers:
+        - name: backend-container
+          image: kdawid27/sfs-backend:v1.0.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              value: "mongodb://admin:adminpassword@mongodb-service:27017/sportsfacility?authSource=admin"
