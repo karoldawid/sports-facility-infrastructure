@@ -19,4 +19,7 @@ spec:
             - containerPort: 8080
           env:
             - name: SPRING_DATA_MONGODB_URI
-              value: "mongodb://admin:adminpassword@mongodb-service:27017/sportsfacility?authSource=admin"
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: mongodb-uri
